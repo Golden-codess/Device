@@ -12,12 +12,11 @@ from telethon.errors import (
 import csv
 from data import er, err  # API_ID va API_HASH
 
-print("")
-print("Azaboi")
+print("\nAzaboi")
 print("Mavjud raqamlar ✅")
 index = 0
 
-results = []  # Faqat BOR bo‘lganlar shu yerga tushadi
+results = []
 
 with open('phone.csv', 'r') as f:
     str_list = [row[0] for row in csv.reader(f)]
@@ -27,51 +26,56 @@ with open('phone.csv', 'r') as f:
         api_hash = err
         phone = utils.parse_phone(pphone)
         index += 1
-        print("")
-        print(f"Akk {index}: +{phone}")
 
         client = TelegramClient(f"sessions/{phone}", api_id, api_hash)
-
-        gifts_count = None
-        is_premium = False
-        stars_balance = 0
 
         try:
             client.connect()
             if not client.is_user_authorized():
-                print("⚠️ Sessiya avtorizatsiya qilinmagan (kod/parol kerak). SKIP qilindi!")
+                print(f"Akk {index}: +{phone}")
+                print("⚠️ Sessiya avtorizatsiya qilinmagan (kod/parol kerak). SKIP qilindi!\n")
                 continue
 
             me = client.get_me()
             full = client(GetFullUserRequest(me.id))
-
-            # 🎁 Gift holati
             gifts_count = getattr(full.full_user, 'stargifts_count', None)
+            is_premium = getattr(me, 'premium', False)
+            result = client(functions.payments.GetStarsStatusRequest(peer=me.id))
+            stars_balance = result.balance.amount if hasattr(result.balance, 'amount') else 0
+
+            first_name = me.first_name or ""
+            last_name = me.last_name or ""
+            full_name = (first_name + " " + last_name).strip()
+            username = f"@{me.username}" if me.username else ""
+
+            print(f"Akk {index}: +{phone} | {full_name} | {username}")
+
+            # Gift
             if gifts_count and gifts_count > 0:
                 print(f"🎁 Gift bor! Gifts count: {gifts_count}")
             else:
                 print("❌ Gift yo'q")
 
-            # 🏆 Premium holati
-            is_premium = getattr(full.users[0], 'premium', False)
+            # Premium
             if is_premium:
                 print("✅ Premium foydalanuvchi!")
             else:
                 print("❌ Premium emas")
 
-            # ⭐ Stars holati
-            result = client(functions.payments.GetStarsStatusRequest(peer=me.id))
-            stars_balance = result.balance.amount if hasattr(result.balance, 'amount') else 0
+            # Stars
             if stars_balance > 0:
                 print(f"⭐ Stars bor! Balance: {stars_balance}")
             else:
                 print("❌ Stars yo'q")
 
-            # 🔥 Faqat BOR bo‘lsa ro‘yxatga qo‘shamiz
+            print()  # Bo‘sh qator bilan ajratish
+
             if (gifts_count and gifts_count > 0) or is_premium or stars_balance > 0:
                 results.append({
                     "index": index,
                     "phone": phone,
+                    "full_name": full_name,
+                    "username": username,
                     "gift": gifts_count,
                     "premium": is_premium,
                     "stars": stars_balance
@@ -87,19 +91,19 @@ with open('phone.csv', 'r') as f:
             ConnectionError,
             OSError
         ) as e:
-            print(f"⚠️ Skipped: {e}")
+            print(f"Akk {index}: +{phone}")
+            print(f"⚠️ Skipped: {e}\n")
 
         except Exception as e:
-            print(f"⚠️ Skipped unknown error: {e}")
+            print(f"Akk {index}: +{phone}")
+            print(f"⚠️ Skipped unknown error: {e}\n")
 
         finally:
             client.disconnect()
-            print()
 
-# 🟢 Oxirida faqat BOR bo‘lganlar ro‘yxati
 print("\n=== Yakuniy ro'yxat: BOR bo‘lganlar ===\n")
 if results:
     for r in results:
-        print(f"{r['index']}) +{r['phone']} | 🎁 Gift: {r['gift']} | 🏆 Premium: {r['premium']} | ⭐ Stars: {r['stars']}")
+        print(f"{r['index']}) +{r['phone']} | {r['full_name']} | {r['username']} | 🎁 Gift: {r['gift']} | 🏆 Premium: {r['premium']} | ⭐ Stars: {r['stars']}")
 else:
     print("Hech bir akkauntda gift/premium/stars topilmadi.")
