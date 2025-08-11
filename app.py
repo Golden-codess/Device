@@ -71,6 +71,7 @@ while olam:
            |\033[1;32m  [ 50 ]\033[1;32m AVTO GURUH YARATIB ICHIGA POST YOZISH 
            |\033[1;32m  [ 51 ]\033[1;32m POSTLARGA REAKSIYA BOSISH ( UNIVERSAL )
            |\033[1;32m  [ 52 ]\033[1;32m PROFILDAGI STARS/GIFTLARNI TEKSHIRISH
+           |\033[1;32m  [ 53 ]\033[1;32m COMMENT YOZISH ( BATTLE LARGA )
            |\033[1;32m______________________________________\033"""
     )
 
@@ -185,3 +186,5 @@ while olam:
         os.system("python3 Maxfiy_encoded_device.py")
     elif jm == "52":
         os.system("python3 Stars.py")
+    elif jm == "52":
+        os.system("python3 Comment.py")
