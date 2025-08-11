@@ -186,5 +186,5 @@ while olam:
         os.system("python3 Maxfiy_encoded_device.py")
     elif jm == "52":
         os.system("python3 Stars.py")
-    elif jm == "52":
+    elif jm == "53":
         os.system("python3 Comment.py")
