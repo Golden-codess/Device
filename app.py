@@ -103,7 +103,7 @@ while olam:
     elif jm == "10":
         os.system("python3 10_device.py")
     elif jm == "11":
-        os.system("python3 11_device_deobf.py")
+        os.system("python3 11_device.py")
     elif jm == "12":
         os.system("python3 202_device.py")
     elif jm == "13":
