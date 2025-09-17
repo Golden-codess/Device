@@ -73,6 +73,8 @@ while olam:
            |\033[1;32m  [ 52 ]\033[1;32m PROFILDAGI STARS/GIFTLARNI TEKSHIRISH
            |\033[1;32m  [ 53 ]\033[1;32m COMMENT YOZISH ( BATTLE LARGA )
            |\033[1;32m  [ 54 ]\033[1;32m BEST RANDOM CAPCHALI KONKURS QATNASHISH
+           |\033[1;32m  [ 55 ]\033[1;32m KANAL/GURUH/LICKADAN OXIRHI HABARLARNI KOʻRISH
+           |\033[1;32m  [ 56 ]\033[1;32m RANDOM RASM OʻRNATISH
            |\033[1;32m______________________________________\033"""
     )
 
@@ -191,3 +193,7 @@ while olam:
         os.system("python3 Comment.py")
     elif jm == "54":
         os.system("python3 BestRandomCapcha.py")
+    elif jm == "55":
+        os.system("python3 oxirgi.py")
+    elif jm == "56":
+        os.system("python3 RandomRasm.py")
