@@ -72,6 +72,7 @@ while olam:
            |\033[1;32m  [ 51 ]\033[1;32m POSTLARGA REAKSIYA BOSISH ( UNIVERSAL )
            |\033[1;32m  [ 52 ]\033[1;32m PROFILDAGI STARS/GIFTLARNI TEKSHIRISH
            |\033[1;32m  [ 53 ]\033[1;32m COMMENT YOZISH ( BATTLE LARGA )
+           |\033[1;32m  [ 54 ]\033[1;32m BEST RANDOM CAPCHALI KONKURS QATNASHISH
            |\033[1;32m______________________________________\033"""
     )
 
@@ -188,3 +189,5 @@ while olam:
         os.system("python3 Stars.py")
     elif jm == "53":
         os.system("python3 Comment.py")
+    elif jm == "54":
+        os.system("python3 BestRandomCapcha.py")
