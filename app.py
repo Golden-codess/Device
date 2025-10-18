@@ -76,6 +76,7 @@ while olam:
            |\033[1;32m  [ 55 ]\033[1;32m KANAL/GURUH/LICKADAN OXIRHI HABARLARNI KOʻRISH
            |\033[1;32m  [ 56 ]\033[1;32m RANDOM RASM OʻRNATISH
            |\033[1;32m  [ 57 ]\033[1;32m PROFILDAGI GIFTLARNI STARSGA AYIRBOSHLASH
+           |\033[1;32m  [ 58 ]\033[1;32m BALANSDAGI BARCHA STARSNI POSTGA BOSISH
            |\033[1;32m______________________________________\033"""
     )
 
@@ -200,3 +201,5 @@ while olam:
         os.system("python3 RandomRasm.py")
     elif jm == "57":
         os.system("python3 Gift.py")
+    elif jm == "58":
+        os.system("python3 Starsbos.py")
